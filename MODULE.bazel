@@ -1,0 +1,1 @@
+bazel_dep(name = "re2", version = "2025-08-12")
