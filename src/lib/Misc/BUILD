@@ -5,7 +5,7 @@ cc_library (
 		"Preprocess",
 		"ShellComp"
 	],
-	visibility = ["//src:__pkg__"]
+    visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 
 cc_library (

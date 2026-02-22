@@ -1,1 +1,5 @@
-bazel_dep(name = "re2", version = "2025-08-12")
+bazel_dep(name = "re2", version = "2025-11-05")
+bazel_dep(name = "boost.filesystem", version = "1.89.0")
+
+# test
+bazel_dep(name = "googletest", version = "1.17.0")

@@ -1,20 +1,20 @@
 cc_library (
 	name = "Output",
 	deps = [
-		"OutputFormat",
-		"OutputMode"
+		"Format",
+		"Mode"
 	],
-	visibility = ["//src:__pkg__"]
+    visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 
 cc_library (
-    name = "OutputFormat",
-    srcs = ["OutputFormat.cc"],
-    hdrs = ["OutputFormat.h"],
+    name = "Format",
+    srcs = ["Format.cc"],
+    hdrs = ["Format.h"],
 )
 
 cc_library (
-    name = "OutputMode",
-    srcs = ["OutputMode.cc"],
-    hdrs = ["OutputMode.h"],
+    name = "Mode",
+    srcs = ["Mode.cc"],
+    hdrs = ["Mode.h"],
 )

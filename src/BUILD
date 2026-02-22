@@ -7,5 +7,6 @@ cc_binary (
         "//src/lib/File:File",
         "//src/lib/Thread:Thread",
         "//src/lib/Output:Output",
+        "@boost.filesystem"
     ]
 )

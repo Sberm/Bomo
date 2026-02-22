@@ -3,7 +3,7 @@ cc_library (
 	deps = [
 		"_Thread"
 	],
-	visibility = ["//src:__pkg__"]
+    visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 
 cc_library (

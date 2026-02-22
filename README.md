@@ -6,3 +6,8 @@ Build
 ```sh
 bazel build //src:bomo
 ```
+
+Testing
+```sh
+bazel run //test:FileTest
+```
