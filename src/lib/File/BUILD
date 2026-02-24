@@ -1,10 +1,10 @@
 cc_library (
-	name = "File",
+    name = "File",
     # where is my external libraries?
-	deps = [
-		"_File",
-		"Filter"
-	],
+    deps = [
+        "_File",
+        "Filter"
+    ],
     visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 

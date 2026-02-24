@@ -1,9 +1,9 @@
 cc_library (
-	name = "Misc",
-	deps = [
-		"Config",
-		"ShellComp"
-	],
+    name = "Misc",
+    deps = [
+        "Config",
+        "ShellComp"
+    ],
     visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 

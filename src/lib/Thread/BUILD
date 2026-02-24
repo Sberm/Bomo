@@ -1,8 +1,8 @@
 cc_library (
-	name = "Thread",
-	deps = [
-		"_Thread"
-	],
+    name = "Thread",
+    deps = [
+        "_Thread"
+    ],
     visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 
