@@ -18,6 +18,4 @@ Thread
 
 Configuration
     format specifications, filter options
-Preprocessing
-    ?
 Shell completion
