@@ -10,9 +10,6 @@ namespace fs = boost::filesystem;
 
 namespace bomo {
 
-  struct Result {
-  };
-
   class File {
   private:
       fs::path      __path;

@@ -1,8 +1,8 @@
 cc_library (
-	name = "Regex",
-	deps = [
-		"Engine",
-	],
+    name = "Regex",
+    deps = [
+        "Engine",
+    ],
     visibility = ["//src:__pkg__", "//test:__pkg__"]
 )
 
