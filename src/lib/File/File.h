@@ -1,3 +1,8 @@
+// ========================================================
+//
+//    Howard Chu (c) 2026: howardchu95@gmail.com
+// ========================================================
+
 #pragma once
 
 #include <vector>
@@ -8,19 +13,16 @@
 
 namespace fs = boost::filesystem;
 
-namespace bomo {
+class File {
+ private:
+  fs::path      path_;
+  std::ifstream stream_;
 
-  class File {
-  private:
-      fs::path      __path;
-      std::ifstream __stream;
+ public:
+  File(const fs::path& path);
+  std::ifstream& getStream() { return stream_; }
+  fs::path       getPath()   { return path_; }
+  bool           comp(const File& f) const;
+};
 
-  public:
-      File(const fs::path& path);
-      std::ifstream& stream() { return __stream; }
-      fs::path       path()   { return __path; }
-      bool           comp(const File& f) const;
-  };
-
-  std::vector<File> readDir(const fs::path& dir);
-} // namespace bomo
+std::vector<File> readDir(const fs::path& dir);

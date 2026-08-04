@@ -40,23 +40,27 @@ TEST(FileTest, readDir) {
   writeClose(file2);
   writeClose(file3);
 
-  std::vector<bomo::File> files = bomo::readDir(testDir);
-  std::sort(files.begin(), files.end(), [](const bomo::File& f1, const bomo::File& f2) {
+  std::vector<File> files = readDir(testDir);
+  std::sort(files.begin(), files.end(), [](const File& f1, const File& f2) {
     return f1.comp(f2);
   });
 
   std::cout << "Files:" << std::endl;
   for (auto&& file: files)
-    std::cout << file.path() << std::endl;
+    std::cout << file.getPath() << std::endl;
 
   ASSERT_EQ(files.size(), 4);
-  ASSERT_EQ(files[0].path(), "test_dir/dir1");
-  ASSERT_EQ(files[1].path(), "test_dir/dir1/file3.txt");
-  ASSERT_EQ(files[2].path(), "test_dir/file1.txt");
-  ASSERT_EQ(files[3].path(), "test_dir/file2.txt");
+  ASSERT_EQ(files[0].getPath(), "test_dir/dir1");
+  ASSERT_EQ(files[1].getPath(), "test_dir/dir1/file3.txt");
+  ASSERT_EQ(files[2].getPath(), "test_dir/file1.txt");
+  ASSERT_EQ(files[3].getPath(), "test_dir/file2.txt");
 
   // remove the directory
   rm(testDir);
 }
 
-
+TEST(FileTest, not_found_should_fail) {
+  fs::path path = "GARbagegaRBage.garbage";
+  File file(path);
+  std::cout << "this test is expected to fail" << std::endl;
+}

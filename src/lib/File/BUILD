@@ -5,7 +5,7 @@ cc_library (
         "_File",
         "Filter"
     ],
-    visibility = ["//src:__pkg__", "//test:__pkg__"]
+    visibility = ["//visibility:public"]
 )
 
 cc_library (
@@ -14,6 +14,7 @@ cc_library (
     deps = ["@boost.filesystem"],
     srcs = ["File.cc"],
     hdrs = ["File.h"],
+    visibility = ["//visibility:public"]
 )
 
 cc_library (
@@ -22,4 +23,5 @@ cc_library (
     deps = ["@boost.filesystem"],
     srcs = ["Filter.cc"],
     hdrs = ["Filter.h"],
+    visibility = ["//visibility:public"]
 )

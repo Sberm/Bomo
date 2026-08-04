@@ -1,9 +1,10 @@
-/*
- * Based on rules imposed by .gitignore and so on, filter
- * files.
- *
- *   Howard Chu (c) 2026: howardchu95@gmail.com
- */
+// ========================================================
+//  Based on rules imposed by .gitignore and so on, filter
+//  files.
+// 
+//    Howard Chu (c) 2026: howardchu95@gmail.com
+// ========================================================
+
 
 #include <boost/filesystem.hpp>
 #include <string>
@@ -12,16 +13,16 @@ namespace fs = boost::filesystem;
 
 class Filter {
 private:
-  std::vector<fs::path> dirs;
-  std::vector<std::string> pats; // regex patterns
-  std::vector<fs::path> files;
+  std::vector<fs::path> dirs_;
+  std::vector<std::string> pats_; // regex patterns
+  std::vector<fs::path> files_;
 
 public:
-  Filter(std::vector<fs::path>& dirs, std::vector<std::string>& pats, std::vector<fs::path>& files)
-  : dirs(dirs), pats(pats), files(files)
+  Filter(std::vector<fs::path>&& dirs, std::vector<std::string>&& pats, std::vector<fs::path>&& files)
+  : dirs_(dirs), pats_(pats), files_(files)
   {}
 
-  const std::vector<fs::path>& getDirs() { return dirs; }
-  const std::vector<std::string>& getPats() { return pats; }
-  const std::vector<fs::path>& getFiles() { return files; }
+  const std::vector<fs::path>& getDirs() { return dirs_; }
+  const std::vector<std::string>& getPats() { return pats_; }
+  const std::vector<fs::path>& getFiles() { return files_; }
 };

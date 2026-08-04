@@ -4,17 +4,19 @@ cc_library (
         "Config",
         "ShellComp"
     ],
-    visibility = ["//src:__pkg__", "//test:__pkg__"]
+    visibility = ["//visibility:public"]
 )
 
 cc_library (
     name = "Config",
     srcs = ["Config.cc"],
     hdrs = ["Config.h"],
+    visibility = ["//visibility:public"]
 )
 
 cc_library (
     name = "ShellComp",
     srcs = ["ShellComp.cc"],
     hdrs = ["ShellComp.h"],
+    visibility = ["//visibility:public"]
 )
