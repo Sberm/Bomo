@@ -121,13 +121,13 @@ TEST(BoyerMoorePerf, bomo_vs_find) {
 
   // re2
   start = chrono::system_clock::now();
-  auto bm_it = std::search(text.begin(), text.end(), bms);
+  bm_it = std::search(text.begin(), text.end(), bms);
   while (bm_it != text.end()) {
     std_bm_pos.push_back(bm_it - text.begin());
     bm_it = std::search(bm_it + 1, text.end(), bms);
   }
   end = chrono::system_clock::now();
-  chrono::duration<long, std::micro> std_bms_time = chrono::duration_cast<chrono::microseconds>(end - start);
+  std_bms_time = chrono::duration_cast<chrono::microseconds>(end - start);
   std::println("std::boyer_moore_searcher time: {}", find_time);
 
   ASSERT_EQ(bm_res->get_mat_pos(), find_pos);

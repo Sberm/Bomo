@@ -1,4 +1,4 @@
-cc_binary(
+cc_test(
     name = "FormatTest",
     srcs = ["FormatTest.cc"],
     copts = [
@@ -11,7 +11,7 @@ cc_binary(
     ]
 )
 
-cc_binary(
+cc_test(
     name = "FileTest",
     srcs = ["FileTest.cc"],
     copts = [
@@ -26,7 +26,7 @@ cc_binary(
     ]
 )
 
-cc_binary(
+cc_test(
     name = "RegexTest",
     srcs = ["RegexTest.cc"],
     copts = [
@@ -42,7 +42,7 @@ cc_binary(
     ]
 )
 
-cc_binary(
+cc_test(
     name = "BoyerMooreTest",
     srcs = ["BoyerMooreTest.cc"],
     copts = [
