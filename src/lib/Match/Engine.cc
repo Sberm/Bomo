@@ -21,6 +21,7 @@ std::unique_ptr<Result> Engine::match(fs::path path, std::string pat) {
   auto result = std::make_unique<Result>();
   size_t line_num = 0;
 
+  // TODO: multiple matches
   while (getline(stream, line)) {
     if (RE2::PartialMatch(line, pat))
         result->push_back(LineMatch(line_num, line, {}));
