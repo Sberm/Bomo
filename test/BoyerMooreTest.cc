@@ -125,8 +125,8 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
   auto engine = Engine(patrn);
   pos = 0;
   size_t text_sz = text.size();
+  std::string_view sv(text);
   start = chrono::system_clock::now();
-  std::string_view sv(text.begin() + pos, text.end());
   while ((pos = engine.Find(sv, pos, text_sz)) != Engine::NOT_FOUND) {
     std::println("found at position {}", pos);
     regex_engine_pos.push_back(pos);
