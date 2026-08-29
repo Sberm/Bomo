@@ -16,9 +16,9 @@ class LineMatch {
   std::string line_;
   std::vector<size_t> mat_pos_; // matched positions in text
  public:
-  size_t get_line_num() const { return line_num_; }
-  const std::string& get_line() const { return line_; }
-  const std::vector<size_t>& get_mat_pos() const { return mat_pos_; }
+  size_t GetLineNum() const { return line_num_; }
+  const std::string& GetLine() const { return line_; }
+  const std::vector<size_t>& GetMatPos() const { return mat_pos_; }
 
   /*
    * TODO: make the line nullable
@@ -31,11 +31,11 @@ class Result {
  private:
   std::vector<LineMatch> mats_;
  public:
-  const std::vector<LineMatch>& get_mats() const { return mats_; }
+  const std::vector<LineMatch>& GetMats() const { return mats_; }
 
   Result() {}
   
-  void push_back(const LineMatch& line_match) {
+  void PushBack(const LineMatch& line_match) {
     mats_.push_back(line_match);
   }
 };

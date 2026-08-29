@@ -9,10 +9,10 @@
 #include "Result.h"
 
 std::ostream& operator << (std::ostream& outs, const LineMatch& mat) {
-  const std::vector<size_t>& mat_pos = mat.get_mat_pos();
+  const std::vector<size_t>& mat_pos = mat.GetMatPos();
   size_t n = mat_pos.size();
 
-  outs << mat.get_line_num() << ": " << mat.get_line() << ": ";
+  outs << mat.GetLineNum() << ": " << mat.GetLine() << ": ";
   for (size_t i = 0; i < n; ++i) {
     if (i + 1 == n)
       outs << mat_pos[i] << "\n";
@@ -23,7 +23,7 @@ std::ostream& operator << (std::ostream& outs, const LineMatch& mat) {
 }
 
 std::ostream& operator << (std::ostream& outs, const Result& res) {
-  for (const LineMatch& mat: res.get_mats())
+  for (const LineMatch& mat: res.GetMats())
     outs << mat << "\n";
   return outs;
 }

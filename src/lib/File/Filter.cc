@@ -19,10 +19,12 @@ private:
 
 public:
   Filter(std::vector<fs::path>&& dirs, std::vector<std::string>&& pats, std::vector<fs::path>&& files)
-  : dirs_(dirs), pats_(pats), files_(files)
+    : dirs_(dirs)
+    , pats_(pats)
+    , files_(files)
   {}
 
-  const std::vector<fs::path>& getDirs() { return dirs_; }
-  const std::vector<std::string>& getPats() { return pats_; }
-  const std::vector<fs::path>& getFiles() { return files_; }
+  const std::vector<fs::path>& GetDirs() { return dirs_; }
+  const std::vector<std::string>& GetPats() { return pats_; }
+  const std::vector<fs::path>& GetFiles() { return files_; }
 };

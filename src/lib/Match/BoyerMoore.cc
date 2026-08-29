@@ -7,7 +7,7 @@
 
 BoyerMoore::BoyerMoore(const std::string& patrn): patrn_(patrn) {
   /*
-   * -=-=-=-=-=-=-= Bad character rule (delta1) -=-=-=-=-=-=-=
+   * -=-=-=-=-=-=-= Bad character rule (delta1) =-=-=-=-=-=-=-
    * Space complexity is either O(km) where k is the size of alphabet and m is the size
    * of the pattern, delta1[charset][pattern_sz], which records all occurrences; or O(k)
    * and only records the last occurrence of a character.
@@ -23,7 +23,7 @@ BoyerMoore::BoyerMoore(const std::string& patrn): patrn_(patrn) {
     delta1_[patrn_[i]] = patrn_sz_ - 1 - i;
 
   /*
-   * -=-=-=-=-=-=-= Good suffix rule (delta2) -=-=-=-=-=-=-=
+   * -=-=-=-=-=-=-= Good suffix rule (delta2) =-=-=-=-=-=-=-
    * This is an O(m) table generation algorithm by Knuth
    * Reference: Knuth, Donald E.; Morris, James H. Jr.; Pratt, Vaughan R. (1977). 
    * "Fast pattern matching in strings"
@@ -49,7 +49,7 @@ BoyerMoore::BoyerMoore(const std::string& patrn): patrn_(patrn) {
     delta2_[i] = std::min(delta2_[i], (int)patrn_sz_ + t - i);
 }
 
-std::unique_ptr<LineMatch> BoyerMoore::match(const std::string& text) {
+std::unique_ptr<LineMatch> BoyerMoore::Match(const std::string& text) {
   assert(patrn_sz_ > 0);
   int64_t text_idx = patrn_sz_ - 1;
   int64_t text_sz = std::size(text);
@@ -77,7 +77,7 @@ std::unique_ptr<LineMatch> BoyerMoore::match(const std::string& text) {
   return std::make_unique<LineMatch>(114, "", std::move(mats));
 }
 
-void BoyerMoore::print_delta1() {
+void BoyerMoore::PrintDelta1() {
   unsigned char ch = 0;
   for (int& d: delta1_) {
     if (d != patrn_sz_)
@@ -86,7 +86,7 @@ void BoyerMoore::print_delta1() {
   }
 }
 
-void BoyerMoore::print_delta2() {
+void BoyerMoore::PrintDelta2() {
   for (int& d: delta2_)
     std::print("{} ", d);
   std::println();

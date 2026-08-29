@@ -47,5 +47,5 @@ public:
 };
 
 /* cout << Red << other_stuff; */
-std::ostream& operator<<(std::ostream& os, const Color& color);
-void color_printf(const char* color, const char* fmt, ...);
+std::ostream& operator << (std::ostream& os, const Color& color);
+void ColorPrintf(const char* color, const char* fmt, ...);

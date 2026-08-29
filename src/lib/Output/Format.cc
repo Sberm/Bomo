@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& os, const Color& color) {
   return os << color.code;
 }
 
-void color_printf(const char* color, const char* fmt, ...) {
+void ColorPrintf(const char* color, const char* fmt, ...) {
   va_list args;
   va_start(args, fmt);
   std::printf("%s", color);

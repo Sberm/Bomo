@@ -8,7 +8,7 @@
 
 namespace fs = boost::filesystem;
 
-void writeClose(std::ofstream& fs) {
+void WriteClose(std::ofstream& fs) {
   fs << "moo";
   fs.flush();
   fs.close();
@@ -19,7 +19,7 @@ void rm(const fs::path dir) {
   std::printf("%s removed\n", dir.native().c_str());
 }
 
-TEST(FileTest, readDir) {
+TEST(FileTest, ReadDir) {
   /*
    *  test_dir
    *    file1.txt
@@ -27,36 +27,36 @@ TEST(FileTest, readDir) {
    *    dir1
    *      file3.txt
    */
-  fs::path testDir("test_dir");
-  fs::path dir1 = testDir / "dir1";
-  fs::create_directory(testDir);
+  fs::path test_dir("test_dir");
+  fs::path dir1 = test_dir / "dir1";
+  fs::create_directory(test_dir);
   fs::create_directory(dir1);
 
-  std::ofstream file1((testDir / "file1.txt").native());
-  std::ofstream file2((testDir / "file2.txt").native());
+  std::ofstream file1((test_dir / "file1.txt").native());
+  std::ofstream file2((test_dir / "file2.txt").native());
   std::ofstream file3((dir1 / "file3.txt").native());
 
-  writeClose(file1);
-  writeClose(file2);
-  writeClose(file3);
+  WriteClose(file1);
+  WriteClose(file2);
+  WriteClose(file3);
 
-  std::vector<File> files = readDir(testDir);
+  std::vector<File> files = ReadDir(test_dir);
   std::sort(files.begin(), files.end(), [](const File& f1, const File& f2) {
     return f1.comp(f2);
   });
 
   std::cout << "Files:" << std::endl;
   for (auto&& file: files)
-    std::cout << file.getPath() << std::endl;
+    std::cout << file.GetPath() << std::endl;
 
   ASSERT_EQ(files.size(), 4);
-  ASSERT_EQ(files[0].getPath(), "test_dir/dir1");
-  ASSERT_EQ(files[1].getPath(), "test_dir/dir1/file3.txt");
-  ASSERT_EQ(files[2].getPath(), "test_dir/file1.txt");
-  ASSERT_EQ(files[3].getPath(), "test_dir/file2.txt");
+  ASSERT_EQ(files[0].GetPath(), "test_dir/dir1");
+  ASSERT_EQ(files[1].GetPath(), "test_dir/dir1/file3.txt");
+  ASSERT_EQ(files[2].GetPath(), "test_dir/file1.txt");
+  ASSERT_EQ(files[3].GetPath(), "test_dir/file2.txt");
 
   // remove the directory
-  rm(testDir);
+  rm(test_dir);
 }
 
 TEST(FileTest, not_found_should_fail) {
