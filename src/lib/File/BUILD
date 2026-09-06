@@ -10,7 +10,7 @@ cc_library (
 
 cc_library (
     name = "_File",
-    copts = ["-Iexternal/boost.filesystem+/include"],
+    copts = ["-Iexternal/boost.filesystem+/include", "--std=c++23"],
     deps = ["@boost.filesystem"],
     srcs = ["File.cc"],
     hdrs = ["File.h"],
@@ -19,7 +19,7 @@ cc_library (
 
 cc_library (
     name = "Filter",
-    copts = ["-Iexternal/boost.filesystem+/include"],
+    copts = ["-Iexternal/boost.filesystem+/include", "--std=c++23"],
     deps = ["@boost.filesystem"],
     srcs = ["Filter.cc"],
     hdrs = ["Filter.h"],

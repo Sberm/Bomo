@@ -10,7 +10,6 @@
 #include "Output/Result.h"
 #include "File/File.h"
 
-// TODO: let's use a reference
 std::unique_ptr<Result> Engine::MatchAll(fs::path path) const {
   File file = File(path);
   auto& stream = file.GetStream();
@@ -18,10 +17,20 @@ std::unique_ptr<Result> Engine::MatchAll(fs::path path) const {
   auto result = std::make_unique<Result>();
   size_t line_num = 0;
 
-  // TODO: multiple matches
   while (getline(stream, line)) {
-    if (RE2::PartialMatch(line, re2_))
-        result->PushBack(LineMatch(line_num, line, {}));
+    size_t start = 0;
+    size_t const end = line.size();
+    std::string_view sv(line);
+    std::vector<size_t> match_pos;
+    while (start < end) {
+      size_t match = Find(sv, start, end);
+      if (match == NOT_FOUND)
+        break;
+      match_pos.push_back(match);
+      start = match + 1;
+    }
+    if(!match_pos.empty())
+      result->PushBack(LineMatch(line_num, line, std::move(match_pos)));
     line_num++;
   }
   return result;

@@ -33,4 +33,4 @@ class File {
   bool           Comp(const File& f) const;
 };
 
-std::vector<File> readDir(const fs::path& dir);
+std::vector<File> ReadDir(const fs::path& dir);

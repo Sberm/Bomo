@@ -3,6 +3,7 @@
 #include <boost/filesystem.hpp>
 #include <fstream>
 #include <cstdio>
+#include <algorithm> // std::sort
 
 #include "File/File.h"
 
@@ -42,7 +43,7 @@ TEST(FileTest, ReadDir) {
 
   std::vector<File> files = ReadDir(test_dir);
   std::sort(files.begin(), files.end(), [](const File& f1, const File& f2) {
-    return f1.comp(f2);
+    return f1.Comp(f2);
   });
 
   std::cout << "Files:" << std::endl;
@@ -59,8 +60,14 @@ TEST(FileTest, ReadDir) {
   rm(test_dir);
 }
 
-TEST(FileTest, not_found_should_fail) {
+TEST(FileTest, NotFoundShouldFail) {
   fs::path path = "GARbagegaRBage.garbage";
-  File file(path);
-  std::cout << "this test is expected to fail" << std::endl;
+  bool failed{false};
+  try {
+    File file(path);
+  } catch (...) {
+    failed = true;
+    std::cout << "this test is expected to fail" << std::endl;
+  }
+  ASSERT_TRUE(failed);
 }

@@ -2,7 +2,8 @@ cc_test(
     name = "FormatTest",
     srcs = ["FormatTest.cc"],
     copts = [
-        "-Isrc/lib"
+        "-Isrc/lib",
+        "--std=c++23"
     ],
     deps = [
         "@googletest//:gtest",
@@ -16,7 +17,8 @@ cc_test(
     srcs = ["FileTest.cc"],
     copts = [
         "-Isrc/lib",
-        "-Iexternal/boost.filesystem+/include"
+        "-Iexternal/boost.filesystem+/include",
+        "--std=c++23"
     ],
     deps = [
         "@googletest//:gtest",
@@ -31,7 +33,8 @@ cc_test(
     srcs = ["RegexTest.cc"],
     copts = [
         "-Isrc/lib",
-        "-Iexternal/boost.filesystem+/include"
+        "-Iexternal/boost.filesystem+/include",
+        "--std=c++23"
     ],
     data = ["A_Pale_View_of_Hills.txt"],
     deps = [
