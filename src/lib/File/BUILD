@@ -19,8 +19,8 @@ cc_library (
 
 cc_library (
     name = "Filter",
-    copts = ["-Iexternal/boost.filesystem+/include", "--std=c++23"],
-    deps = ["@boost.filesystem"],
+    copts = ["-Iexternal/boost.filesystem+/include", "-Iexternal/re2+", "--std=c++23"],
+    deps = ["@boost.filesystem", "@re2"],
     srcs = ["Filter.cc"],
     hdrs = ["Filter.h"],
     visibility = ["//visibility:public"]

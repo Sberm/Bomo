@@ -13,6 +13,24 @@ cc_test(
 )
 
 cc_test(
+    name = "FilterTest",
+    srcs = ["FilterTest.cc"],
+    copts = [
+        "-Isrc/lib",
+        "-Iexternal/boost.filesystem+/include",
+        "-Iexternal/re2+",
+        "--std=c++23"
+    ],
+    deps = [
+        "@re2",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+        "//src/lib/File:File",
+        "@boost.filesystem"
+    ]
+)
+
+cc_test(
     name = "FileTest",
     srcs = ["FileTest.cc"],
     copts = [

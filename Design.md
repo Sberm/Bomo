@@ -22,23 +22,23 @@ Configuration
 Shell completion
 
 
-~~~~~~~~~~~~~Worker~~~~~~~~~~~~~~~~~
-      Directory walking [Filter]
-               |
-             {Dir}
-               |
-       File walking [Filter]
-               |
-             {File}
-               |
-  Pattern matching within a file
-               |
-            {Result}
-               |
-        Formatter [Mode]
-               |
-         {Text Output}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~Worker~~~~~~~~~~~~~~~~
+        Directory walking [Filter]
+                 |
+               {Dir}
+                 |
+         File walking [Filter]
+                 |
+               {File}
+                 |
+    Pattern matching within a file
+                 |
+              {Result}
+                 |
+          Formatter [Mode]
+                 |
+           {Text Output}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
        Master
