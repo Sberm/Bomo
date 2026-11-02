@@ -10,9 +10,10 @@
 #include "Match/Engine.h"
 #include "Output/Result.h"
 
-#define HELP_KEY "help"
-#define PAT_KEY  "pattern"
-#define DIR_KEY  "directory"
+#define HELP "help"
+#define PAT  "pattern"
+#define DIRC  "directory"
+#define MADELEINE "madeleine"
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
@@ -22,38 +23,50 @@ int main(int ac, char **av)
   po::options_description desc("Available options");
   desc.add_options()
     ("help", "print this message")
-    ((std::string(PAT_KEY) + ",p").c_str(), po::value<std::string>(), "search pattern")
-    ((std::string(DIR_KEY) + ",d").c_str(), po::value<std::vector<std::string>>(), "directory to search from");
-
-  // first pattern string, second directory
+    ((std::string(PAT) + ",p").c_str(), po::value<std::string>(), "search pattern")
+    ((std::string(DIRC) + ",d").c_str(), po::value<std::vector<std::string>>(), "directory to search from")
+    ((std::string(MADELEINE)).c_str(), "search for the string \'madeleine\'");
+  // <pattern, directory>
   po::positional_options_description pos_opt;
-  pos_opt.add(PAT_KEY, 1).add(DIR_KEY, -1);
+  std::string pattern;
+  std::vector<std::string> dirs;
+  po::variables_map var_map;
 
-  po::variables_map vm;
+  pos_opt.add(PAT, 1).add(DIRC, 2);
   try {
-    po::store(po::command_line_parser(ac, av).options(desc).positional(pos_opt).run(), vm);
+    po::store(po::command_line_parser(ac, av).options(desc).positional(pos_opt).run(), var_map);
   } catch (...) {
     std::cout << desc << std::endl;
     return 0;
   }
-  po::notify(vm);
+  po::notify(var_map);
 
-  if (vm.count(HELP_KEY)) {
+  if (var_map.count(HELP)) {
     std::cout << desc << std::endl;
     return 0;
   }
+  if (var_map.count(PAT)) {
+    pattern = var_map[PAT].as<std::string>();
+  }
+  if (var_map.count(DIRC)) {
+    dirs = var_map[DIRC].as<std::vector<std::string>>();
+  } else {
+    dirs.push_back(".");
+  }
+  if (var_map.count(MADELEINE)) {
+    std::println("madeleine!\n");
+    pattern = std::string("(?i)madeleine");
+  }
 
-  if (vm.count(PAT_KEY) && vm.count(DIR_KEY)) {
-    auto pat_s = vm[PAT_KEY].as<std::string>();
-    auto dirs = vm[DIR_KEY].as<std::vector<std::string>>();
-    std::println("pattern: \"{}\"", pat_s);
+  if (!pattern.empty()) { // bomo has to have pattern
+    std::println("pattern: \"{}\"", pattern);
     std::println("directories: \n{}", dirs);
 
-    Engine engine(pat_s);
-    // for simplicity use the first directory
-    std::unique_ptr<Result> result = engine.MatchAll(fs::path(dirs[0]));
-    std::println("regex match result:\n");
-    std::cout << *result << "\n";
+    Engine engine(pattern);
+    for (auto dir: dirs) {
+      std::unique_ptr<Match> result = engine.MatchDir(fs::path(dir));
+      std::cout << *result << "\n";
+    }
   } else {
     std::cout << desc << std::endl;
   }

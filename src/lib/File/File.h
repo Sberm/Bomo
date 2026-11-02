@@ -20,7 +20,7 @@ class File {
 
  public:
 
-  File(const fs::path& path)
+  File(fs::path const & path)
     : path_(path)
   {
     stream_ = std::ifstream(path.string().c_str(), std::ifstream::in);

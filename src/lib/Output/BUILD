@@ -16,7 +16,7 @@ cc_library (
     hdrs = ["Format.h"],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
     ],
     visibility = ["//visibility:public"]
 )
@@ -27,7 +27,7 @@ cc_library (
     hdrs = ["Mode.h"],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
     ],
     visibility = ["//visibility:public"]
 )
@@ -38,7 +38,12 @@ cc_library (
     hdrs = ["Result.h"],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
+        "-Iexternal/boost.filesystem+/include",
+    ],
+    deps = [
+        "@boost.filesystem",
+        "Format",
     ],
     visibility = ["//visibility:public"]
 )

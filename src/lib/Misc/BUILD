@@ -8,7 +8,7 @@ cc_library (
     ],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
     ],
     visibility = ["//visibility:public"]
 )
@@ -19,7 +19,7 @@ cc_library (
     hdrs = ["Config.h"],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
     ],
     visibility = ["//visibility:public"]
 )
@@ -30,7 +30,7 @@ cc_library (
     hdrs = ["ShellComp.h"],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
     ],
     visibility = ["//visibility:public"]
 )

@@ -28,7 +28,7 @@ TEST(Regex, MatchAll) {
   fs::path path = "test/A_Pale_View_of_Hills.txt";
   std::string patrn = "^As far as.*a fortnight or so later.$";
   Engine engine(patrn);
-  std::unique_ptr<Result> result = engine.MatchAll(path);
+  std::unique_ptr<FileMatch> result = engine.MatchAll(path);
   std::ostringstream oss;
   oss << *result;
   std::string result_str = oss.str();

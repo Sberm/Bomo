@@ -5,7 +5,7 @@ cc_test(
     srcs = ["FormatTest.cc"],
     copts = [
         "-Isrc/lib",
-        "--std=c++23"
+        "--std=c++23",
     ],
     deps = [
         "@googletest//:gtest",
@@ -20,7 +20,7 @@ cc_test(
     copts = [
         "-Isrc/lib",
         "-Iexternal/boost.filesystem+/include",
-        "--std=c++23"
+        "--std=c++23",
     ],
     deps = [
         "@googletest//:gtest",
@@ -36,7 +36,7 @@ cc_test(
     copts = [
         "-Isrc/lib",
         "-Iexternal/boost.filesystem+/include",
-        "--std=c++23"
+        "--std=c++23",
     ],
     data = ["A_Pale_View_of_Hills.txt"],
     deps = [
@@ -53,7 +53,7 @@ cc_test(
     copts = [
         "-Isrc/lib",
         "--std=c++23",
-        "-Iexternal/boost.filesystem+/include"
+        "-Iexternal/boost.filesystem+/include",
     ],
     data = ["A_Pale_View_of_Hills.txt"],
     deps = [

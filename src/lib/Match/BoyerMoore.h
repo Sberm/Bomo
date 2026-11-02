@@ -8,19 +8,20 @@
 #include "Output/Result.h"
 
 class BoyerMoore {
-  std::string      patrn_;
+ private:
+  std::string const pattern_;
   std::array<int,  UCHAR_MAX> delta1_;
   std::vector<int> delta2_;
-  size_t           patrn_sz_;
  public:
   BoyerMoore(const std::string& patrn);
-  int Delta1CharIdx(char c, int idx);
-  std::unique_ptr<LineMatch> Match(const std::string& text);
-  void PrintDelta1();
-  void PrintDelta2();
-  std::array<int, UCHAR_MAX> GetDelta1() { return delta1_; }
-  std::vector<int> GetDelta2() { return delta2_; }
-  size_t GetPatrnSz() { return patrn_sz_; }
+  int Delta1CharIdx(char c, int idx) const;
+  bool FindAndConsume(const std::string_view text, std::string_view * capture) const;
+  void PrintDelta1() const;
+  void PrintDelta2() const;
+  std::array<int, UCHAR_MAX> GetDelta1() const { return delta1_; }
+  std::vector<int> GetDelta2() const { return delta2_; }
+  size_t GetPatternSize() const { return pattern_.size(); }
+  std::string GetPattern() const { return pattern_; }
 };
 
 std::ostream& operator << (std::ostream& ostream, BoyerMoore &bm);

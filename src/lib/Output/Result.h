@@ -10,35 +10,58 @@
 #include <stddef.h>
 #include <optional>
 
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
+
 class LineMatch {
  private:
   size_t line_num_;
   std::string line_;
-  std::vector<size_t> mat_pos_; // matched positions in text
+  std::vector<std::pair<size_t, size_t>> match_ranges_; // {start, end}, end is non-inclusive
  public:
   size_t GetLineNum() const { return line_num_; }
   const std::string& GetLine() const { return line_; }
-  const std::vector<size_t>& GetMatPos() const { return mat_pos_; }
+  const std::vector<std::pair<size_t, size_t>>& GetMatchRanges() const { return match_ranges_; }
 
   /*
    * TODO: make the line nullable
    */
-  LineMatch(size_t line_num, std::optional<std::string> line, std::vector<size_t>&& mat_pos):
-    line_num_(line_num), line_(line.value_or("")), mat_pos_(mat_pos) {}
+  LineMatch(size_t line_num, std::optional<std::string> line, std::vector<std::pair<size_t, size_t>>&& match_ranges):
+    line_num_(line_num), line_(line.value_or("")), match_ranges_(match_ranges) {}
 };
 
-class Result {
+class FileMatch {
  private:
-  std::vector<LineMatch> mats_;
+  std::vector<LineMatch> line_matches_;
+  fs::path path_;
  public:
-  const std::vector<LineMatch>& GetMats() const { return mats_; }
+  std::vector<LineMatch> const & GetLineMatches() const { return line_matches_; }
+  fs::path const & GetPath() const { return path_; }
 
-  Result() {}
+  FileMatch() {}
+  FileMatch(fs::path path) : 
+    path_(path)
+  {}
   
   void PushBack(const LineMatch& line_match) {
-    mats_.push_back(line_match);
+    line_matches_.push_back(line_match);
+  }
+
+  operator bool() const { return !line_matches_.empty(); }
+};
+
+class Match {
+ private:
+  std::vector<FileMatch> file_matches_;
+ public:
+  const std::vector<FileMatch>& GetFileMatches() const { return file_matches_; }
+
+  void PushBack(const FileMatch& file_match) {
+    file_matches_.push_back(file_match);
   }
 };
 
 std::ostream& operator << (std::ostream& outs, const LineMatch& mat);
-std::ostream& operator << (std::ostream& outs, const Result& res);
+std::ostream& operator << (std::ostream& outs, const FileMatch& res);
+std::ostream& operator << (std::ostream& outs, const Match& res);
