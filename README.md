@@ -7,6 +7,8 @@ Bomo uses C++20
 Build
 ```sh
 bazel build //src:bm
+# apply global build flags
+bazel build --cxxopt=-O0 -c dbg //src:bm
 ```
 
 Testing

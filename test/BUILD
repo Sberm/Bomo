@@ -1,6 +1,21 @@
 load("@rules_cc//cc:defs.bzl", "cc_test")
 
 cc_test(
+    name = "re2Test",
+    srcs = ["re2Test.cc"],
+    copts = [
+        "-Isrc/lib",
+        "--std=c++23",
+        "-Iexternal/re2+",
+    ],
+    deps = [
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+        "@re2",
+    ]
+)
+
+cc_test(
     name = "FormatTest",
     srcs = ["FormatTest.cc"],
     copts = [

@@ -32,9 +32,7 @@ class Engine {
                                                      /* no need to capture if only file names are printed */
     , bm(pattern)
   {
-    // TODO: test me
-    std::println("pattern {} unquoted {}", pattern, re2::RE2::QuoteMeta(pattern));
-    if (!explicit_plain_text || re2::RE2::QuoteMeta(pattern) == pattern) {
+    if (!explicit_plain_text) {
       plain_text_ = true;
     } else {
       plain_text_ = false;
@@ -51,6 +49,7 @@ class Engine {
   const std::string pattern_;
   const std::string parenthesized_pattern_;
   re2::RE2 re2_;
+  // char a[512];
   BoyerMoore bm;
   bool plain_text_;
 };

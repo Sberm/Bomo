@@ -9,19 +9,29 @@
 #include "Engine.h"
 #include "Output/Result.h"
 #include "File/File.h"
+#include "Misc/Util.h"
 
 namespace fs = boost::filesystem;
 
-// return true if there's any captures
 // TODO: make this print as soon as there's a match
+// return true if there's any captures
 bool Engine::MatchStrAll(std::string_view sv, std::vector<std::pair<size_t, size_t>>& match_ranges) const {
   std::string_view capture;
-  std::string_view save = sv;
   bool captured = false;
-  while (RE2::FindAndConsume(&sv, re2_, &capture)) {
+  size_t start = 0;
+  while (start < sv.size() && re2_.Match(sv, start, sv.size(), re2::RE2::UNANCHORED, &capture, 1)) {
+    // for example, a* matches cde, but matched is empty
+    if (capture.empty()) {
+      match_ranges.push_back({start, start}); 
+      start = Util::NextChar(sv, start);
+      captured = true;
+      continue;
+    }
+    size_t match_start = capture.data() - sv.data();
+    size_t match_end = match_start + capture.size();
+    match_ranges.push_back({match_start, match_end}); 
+    start = match_end;
     captured = true;
-    size_t start = capture.data() - save.data();
-    match_ranges.push_back({start, start + capture.size()}); 
   }
   return captured;
 }

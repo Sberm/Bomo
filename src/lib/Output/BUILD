@@ -44,6 +44,7 @@ cc_library (
     deps = [
         "@boost.filesystem",
         "Format",
+        "//src/lib/Misc:Util",
     ],
     visibility = ["//visibility:public"]
 )

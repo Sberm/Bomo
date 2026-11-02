@@ -21,7 +21,7 @@ TEST(BM, delta1) {
   BoyerMoore bm(patrn);
   auto delta1 = bm.GetDelta1();
   std::array<int, UCHAR_MAX> expected;
-  expected.fill(bm.GetPatrnSz());
+  expected.fill(bm.GetPatternSize());
   expected['a'] = 0;
   expected['b'] = 1;
   expected['c'] = 2;
@@ -48,23 +48,23 @@ TEST(BoyerMooreTest, delta2) {
 }
 
 TEST(BM, Match) {
-  std::string patrn = "bar";
   std::string text = "foobarfoobar";
-  std::string text_startsw_bar = "bartenderbartenderbartender";
+  std::string text_startsw_bar = "xbabaaabartenderbartenderbartender";
+  std::string patrn = "bar";
   BoyerMoore bm(patrn);
-  auto line_match = bm.Match(text);
+  std::string_view capture;
 
-  std::cout << *line_match;
+  ASSERT_TRUE(bm.FindAndConsume(text, 0, text.size(), &capture));
+  std::println("{} at {}", capture, capture.data() - text.data());
  
-  line_match = bm.Match(text_startsw_bar);
-  std::cout << *line_match;
+  ASSERT_TRUE(bm.FindAndConsume(text_startsw_bar, 0, text_startsw_bar.size(), &capture));
+  std::println("{} at {}", capture, capture.data() - text_startsw_bar.data());
 
-  line_match = bm.Match(patrn);
-  std::cout << *line_match;
+  ASSERT_TRUE(bm.FindAndConsume(patrn, 0, patrn.size(), &capture));
+  std::println("{} at {}", capture, capture.data() - patrn.data());
 }
 
-class BMPerf :
-    public testing::TestWithParam<std::string_view> {
+class BMPerf : public testing::TestWithParam<std::string_view> {
 };
 
 TEST_P(BMPerf, BenchmarkAndCorrectness)
@@ -85,8 +85,10 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
   text = sstream.str();
   std::println("text length {}", text.length());
 
+
   /* string::find */
   std::vector<size_t> find_pos;
+
   start = chrono::system_clock::now();
   size_t pos = text.find(patrn, 0);
   while (pos != std::string::npos) {
@@ -94,21 +96,36 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
     pos = text.find(patrn, pos + 1);
   }
   end = chrono::system_clock::now();
+
   chrono::duration<long, std::micro> find_time = chrono::duration_cast<chrono::microseconds>(end - start);
   std::println("string::find time: {}", find_time);
 
+
   /* Boyer-Moore */
+  std::string_view capture;
+  std::vector<size_t> bm_res;
+  size_t start_pos = 0;
+  size_t end_pos = text.size();
+
   start = chrono::system_clock::now();
-  auto bm_res = bm.Match(text);
+  while (bm.FindAndConsume(text, start_pos, end_pos, &capture)) {
+    bm_res.emplace_back(capture.data() - text.data());
+    start_pos = capture.data() - text.data() + capture.size();
+    // std::println("captured {}", capture);
+  }
   end = chrono::system_clock::now();
+
   chrono::duration<long, std::micro> bm_time = end - start;
   std::println("Boyer-Moore time: {}", bm_time);
-  ASSERT_EQ(bm_res->GetMatPos(), find_pos);
-  std::println("result: {}", bm_res->GetMatPos());
+  ASSERT_EQ(bm_res, find_pos);
+  // ASSERT_EQ(bm_res->GetMatPos(), find_pos);
+  // std::println("result: {}", bm_res->GetMatPos());
+
 
   /* std::boyer_moore_searcher */
   std::vector<size_t> std_bm_pos;
   std::boyer_moore_searcher bms(patrn.begin(), patrn.end());
+
   start = chrono::system_clock::now();
   auto bm_it = std::search(text.begin(), text.end(), bms);
   while (bm_it != text.end()) {
@@ -116,22 +133,26 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
     bm_it = std::search(bm_it + 1, text.end(), bms);
   }
   end = chrono::system_clock::now();
+
   chrono::duration<long, std::micro> std_bms_time = chrono::duration_cast<chrono::microseconds>(end - start);
   std::println("std::boyer_moore_searcher time: {}", find_time);
   ASSERT_EQ(std_bm_pos, find_pos);
 
+
   /* re2 */
   std::vector<size_t> regex_engine_pos;
   auto engine = Engine(patrn);
-  pos = 0;
-  size_t text_sz = text.size();
   std::string_view sv(text);
+  std::vector<std::pair<size_t, size_t>> match_ranges;
+
   start = chrono::system_clock::now();
-  while ((pos = engine.Find(sv, pos, text_sz)) != Engine::NOT_FOUND) {
-    std::println("found at position {}", pos);
-    regex_engine_pos.push_back(pos);
-    pos += 1;
+  engine.MatchStrAll(sv, match_ranges);
+  end = chrono::system_clock::now();
+
+  for (auto& match_range: match_ranges) {
+    regex_engine_pos.emplace_back(match_range.first);
   }
+
   std::println("re2 time: {}", find_time);
   ASSERT_EQ(regex_engine_pos, find_pos);
 }

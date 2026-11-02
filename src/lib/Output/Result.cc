@@ -9,8 +9,9 @@
 
 #include "Result.h"
 #include "Output/Format.h"
+#include "Misc/Util.h"
 
-const bool show_column = true;
+const bool show_column = false;
 
 std::ostream& operator << (std::ostream& outs, const Match& matches) {
   auto file_matches = matches.GetFileMatches();
@@ -26,16 +27,23 @@ std::ostream& operator << (std::ostream& outs, const LineMatch& line_match) {
   outs << Red << line_match.GetLineNum() << ": " << ColorReset;
 
   auto line = line_match.GetLine();
-  size_t start = 0;
+  size_t unmatched_start = 0;
   for (size_t i = 0; i < n; i++) {
     auto [range_start, range_end] = match_ranges[i];
-    outs << std::string_view(line.begin() + start, line.begin() + range_start);
-    outs << Red << std::string_view(line.begin() + range_start, line.begin() + std::min(range_end, line.size())) << ColorReset;
-    start = range_end;
+    if (range_start == range_end) {
+      /* e.g. 'a*' */
+      size_t const next_char_idx = Util::NextChar(line, range_start);
+      outs << std::string_view(line.begin() + range_start, line.begin() + next_char_idx);
+      unmatched_start = next_char_idx;
+    } else {
+      outs << std::string_view(line.data() + unmatched_start, line.data() + range_start);
+      outs << Red << std::string_view(line.data() + range_start, line.data() + range_end) << ColorReset;
+      unmatched_start = range_end;
+    }
   }
-  if (line.begin() + start != line.end()) {
-    outs << std::string_view(line.begin() + start, line.end());
-    start = line.size();
+  if (line.begin() + unmatched_start < line.end()) {
+    outs << std::string_view(line.data() + unmatched_start, line.data() + line.size());
+    unmatched_start = line.size();
   }
 
   if (show_column) {
@@ -48,7 +56,7 @@ std::ostream& operator << (std::ostream& outs, const LineMatch& line_match) {
     }
   } 
 
-  outs << "\n";
+  outs << '\n';
 
   return outs;
 }
@@ -57,5 +65,6 @@ std::ostream& operator << (std::ostream& outs, const FileMatch& res) {
   outs << res.GetPath().relative_path().c_str() << ":\n";
   for (const LineMatch& mat: res.GetLineMatches())
     outs << mat;
+  outs << '\n';
   return outs;
 }

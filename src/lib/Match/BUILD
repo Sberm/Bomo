@@ -15,7 +15,14 @@ cc_library (
         "-Isrc/lib",
         "--std=c++23",
     ],
-    deps = ["@re2", "@boost.filesystem", "//src/lib/Output:Output", "//src/lib/File:File", "//src/lib/Match:BoyerMoore"],
+    deps = [
+        "@re2",
+        "@boost.filesystem",
+        "//src/lib/Output:Output",
+        "//src/lib/File:File",
+        "//src/lib/Match:BoyerMoore",
+        "//src/lib/Misc:Util",
+    ],
     hdrs = ["Engine.h"],
     visibility = ["//visibility:public"]
 )
@@ -27,7 +34,9 @@ cc_library (
         "-Isrc/lib",
         "--std=c++23"
     ],
-    deps = ["//src/lib/Output:Result"],
+    deps = [
+        "//src/lib/Output:Result"
+    ],
     hdrs = ["BoyerMoore.h"],
     visibility = ["//visibility:public"]
 )

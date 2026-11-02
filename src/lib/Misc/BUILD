@@ -4,7 +4,8 @@ cc_library (
     name = "Misc",
     deps = [
         "Config",
-        "ShellComp"
+        "ShellComp",
+        "Util",
     ],
     copts = [
         "-Isrc/lib",
@@ -28,6 +29,17 @@ cc_library (
     name = "ShellComp",
     srcs = ["ShellComp.cc"],
     hdrs = ["ShellComp.h"],
+    copts = [
+        "-Isrc/lib",
+        "--std=c++23",
+    ],
+    visibility = ["//visibility:public"]
+)
+
+cc_library (
+    name = "Util",
+    srcs = ["Util.cc"],
+    hdrs = ["Util.h"],
     copts = [
         "-Isrc/lib",
         "--std=c++23",

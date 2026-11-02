@@ -9,14 +9,8 @@ cc_binary (
         '-Isrc/lib',
     ],
     deps = [
-        "//src/lib/Misc:Misc",
         "//src/lib/Match:Match",
-        "//src/lib/File:File",
-        "//src/lib/Thread:Thread",
         "//src/lib/Output:Output",
-        # TODO: are these two needed?
-        "@boost.filesystem",
         "@boost.program_options",
-        "@re2"
     ]
 )

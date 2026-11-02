@@ -13,9 +13,12 @@ class BoyerMoore {
   std::array<int,  UCHAR_MAX> delta1_;
   std::vector<int> delta2_;
  public:
-  BoyerMoore(const std::string& patrn);
+  BoyerMoore(std::string const & pattern);
   int Delta1CharIdx(char c, int idx) const;
-  bool FindAndConsume(const std::string_view text, std::string_view * capture) const;
+  /* linear string search */
+  bool FindAndConsume(std::string_view const text, size_t const start, size_t const end, std::string_view * capture) const;
+  /* the real BoyerMoore */
+  bool FindAndConsume2(std::string_view const text, size_t const start, size_t const end, std::string_view * capture) const;
   void PrintDelta1() const;
   void PrintDelta2() const;
   std::array<int, UCHAR_MAX> GetDelta1() const { return delta1_; }
