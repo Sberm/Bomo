@@ -92,7 +92,7 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
   start = chrono::system_clock::now();
   size_t pos = text.find(patrn, 0);
   while (pos != std::string::npos) {
-    find_pos.push_back(pos);
+    find_pos.emplace_back(pos);
     pos = text.find(patrn, pos + 1);
   }
   end = chrono::system_clock::now();
@@ -129,7 +129,7 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
   start = chrono::system_clock::now();
   auto bm_it = std::search(text.begin(), text.end(), bms);
   while (bm_it != text.end()) {
-    std_bm_pos.push_back(bm_it - text.begin());
+    std_bm_pos.emplace_back(bm_it - text.begin());
     bm_it = std::search(bm_it + 1, text.end(), bms);
   }
   end = chrono::system_clock::now();
@@ -164,4 +164,5 @@ INSTANTIATE_TEST_SUITE_P(Patterns, BMPerf,
     "anxious",
     "A Pale View of Hills",
     "Ishiguro"
-  ));
+  )
+);
