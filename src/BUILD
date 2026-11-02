@@ -11,6 +11,7 @@ cc_binary (
     deps = [
         "//src/lib/Match:Match",
         "//src/lib/Output:Output",
+        "//src/lib/Misc:Util",
         "@boost.program_options",
     ]
 )

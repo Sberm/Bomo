@@ -111,15 +111,12 @@ TEST_P(BMPerf, BenchmarkAndCorrectness)
   while (bm.FindAndConsume(text, start_pos, end_pos, &capture)) {
     bm_res.emplace_back(capture.data() - text.data());
     start_pos = capture.data() - text.data() + capture.size();
-    // std::println("captured {}", capture);
   }
   end = chrono::system_clock::now();
 
   chrono::duration<long, std::micro> bm_time = end - start;
   std::println("Boyer-Moore time: {}", bm_time);
   ASSERT_EQ(bm_res, find_pos);
-  // ASSERT_EQ(bm_res->GetMatPos(), find_pos);
-  // std::println("result: {}", bm_res->GetMatPos());
 
 
   /* std::boyer_moore_searcher */

@@ -5,4 +5,7 @@
 
 namespace Util {
   size_t NextChar(std::string_view const sv, size_t const start);
+
+  void Madeleine();
+
 } /* namespace util */

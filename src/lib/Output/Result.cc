@@ -24,7 +24,7 @@ std::ostream& operator << (std::ostream& outs, const Match& matches) {
 std::ostream& operator << (std::ostream& outs, const LineMatch& line_match) {
   const std::vector<std::pair<size_t, size_t>>& match_ranges = line_match.GetMatchRanges();
   size_t n = match_ranges.size();
-  outs << Red << line_match.GetLineNum() << ": " << ColorReset;
+  outs << Green << line_match.GetLineNum() << ": " << ColorReset;
 
   auto line = line_match.GetLine();
   size_t unmatched_start = 0;
@@ -62,7 +62,7 @@ std::ostream& operator << (std::ostream& outs, const LineMatch& line_match) {
 }
 
 std::ostream& operator << (std::ostream& outs, const FileMatch& res) {
-  outs << res.GetPath().relative_path().c_str() << ":\n";
+  outs << Yellow << res.GetPath().relative_path().c_str() << ColorReset << ":\n";
   for (const LineMatch& mat: res.GetLineMatches())
     outs << mat;
   outs << '\n';
