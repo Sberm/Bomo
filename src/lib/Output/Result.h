@@ -29,6 +29,8 @@ class LineMatch {
    */
   LineMatch(size_t line_num, std::optional<std::string> line, std::vector<std::pair<size_t, size_t>>&& match_ranges):
     line_num_(line_num), line_(line.value_or("")), match_ranges_(match_ranges) {}
+
+  operator bool() const { return !match_ranges_.empty(); }
 };
 
 class FileMatch {
@@ -60,6 +62,8 @@ class Match {
   void PushBack(const FileMatch& file_match) {
     file_matches_.push_back(file_match);
   }
+
+  operator bool() const { return !file_matches_.empty(); }
 };
 
 std::ostream& operator << (std::ostream& outs, const LineMatch& mat);

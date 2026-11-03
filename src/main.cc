@@ -23,17 +23,18 @@ namespace fs = boost::filesystem;
 
 int main(int ac, char **av)
 {
-  po::options_description desc("Bomo command arguments:");
+  po::options_description desc("Bomo command arguments");
   desc.add_options()
     ("help", "print this message")
     ((std::string(PAT) + ",p").c_str(), po::value<std::string>(), "search pattern")
+    // don't know how this works yet
     ((std::string(DIRC) + ",d").c_str(), po::value<std::vector<std::string>>(), "directory to search from")
     ((std::string(MADELEINE)).c_str(), "search for the string \'madeleine\'");
   po::positional_options_description pos_opt;
   po::variables_map var_map;
 
   std::string pattern;
-  std::vector<std::string> dirs;
+  std::vector<std::string> paths;
 
   /* <pattern, directory> */
   pos_opt.add(PAT, 1).add(DIRC, 2);
@@ -45,6 +46,9 @@ int main(int ac, char **av)
   }
   po::notify(var_map);
 
+  /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  /* =x=x=x=x=x=x=x=x=x=x WARNING: lots of options =x=x=x=x=x=x=x=x=x=x */
+  /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
   if (var_map.count(HELP)) {
     std::cout << desc << std::endl;
     return 0;
@@ -53,26 +57,40 @@ int main(int ac, char **av)
     pattern = var_map[PAT].as<std::string>();
   }
   if (var_map.count(DIRC)) {
-    dirs = var_map[DIRC].as<std::vector<std::string>>();
+    paths = var_map[DIRC].as<std::vector<std::string>>();
   } else {
-    dirs.push_back(".");
+    paths.push_back(".");
   }
   if (var_map.count(MADELEINE)) {
     Util::Madeleine();
     pattern = "(?i)madeleine";
   }
+  /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  /* =x=x=x=x=x=x=x=x=x=x=x options handling ends =x=x=x=x=x=x=x=x=x=x= */
+  /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-  if (!pattern.empty()) { // bomo has to have a pattern
+  /* bomo has to have a pattern */
+  if (!pattern.empty()) {
     if (bmdebug) {
       std::println("pattern: \"{}\"", pattern);
-      std::println("directories: \n{}", dirs);
+      std::println("paths: \n{}", paths);
     }
+
+    /* let it rip!!! */
     Engine engine(pattern);
-    for (auto dir: dirs) {
-      std::unique_ptr<Match> result = engine.MatchDir(fs::path(dir));
-      std::cout << *result;
+    for (auto path: paths) {
+      if (fs::is_directory(fs::path(path))) {
+        std::unique_ptr<Match> result = engine.MatchDir(fs::path(path));
+        if (*result)
+          std::cout << *result;
+      } else {
+        std::unique_ptr<FileMatch> result = engine.MatchFile(fs::path(path));
+        if (*result)
+          std::cout << *result;
+      }
     }
   } else {
+    std::println("search pattern is empty");
     std::cout << desc << std::endl;
   }
   
