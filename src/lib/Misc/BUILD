@@ -44,5 +44,8 @@ cc_library (
         "-Isrc/lib",
         "--std=c++23",
     ],
+    deps = [
+        "//src/lib/Output:Format"
+    ],
     visibility = ["//visibility:public"]
 )

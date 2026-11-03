@@ -46,6 +46,6 @@ public:
   }
 };
 
-/* cout << Red << other_stuff; */
+/* syntax: cout << Red << other_stuff; */
 std::ostream& operator << (std::ostream& os, const Color& color);
 void ColorPrintf(const char* color, const char* fmt, ...);
