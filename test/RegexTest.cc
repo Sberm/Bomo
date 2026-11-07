@@ -10,14 +10,12 @@ namespace fs = boost::filesystem;
 
 TEST(Regex, Find) {
   std::string_view sv = "foobarfoocfoo";
-  size_t end = sv.size();
   Engine engine("foo[bc]");
+  std::vector<std::pair<size_t, size_t>> match_ranges;
+  const std::vector<std::pair<size_t, size_t>> expect = { {0, 4}, {6, 10} };
 
-  size_t match1 = engine.Find(sv, 0, end);
-  ASSERT_EQ(match1, 0);
-
-  size_t match2 = engine.Find(sv, match1 + 1, end);
-  ASSERT_EQ(match2, 6);
+  ASSERT_TRUE(engine.MatchStrAll(sv, match_ranges));
+  ASSERT_EQ(match_ranges, expect);
 }
 
 /*
@@ -28,7 +26,7 @@ TEST(Regex, MatchAll) {
   fs::path path = "test/A_Pale_View_of_Hills.txt";
   std::string patrn = "^As far as.*a fortnight or so later.$";
   Engine engine(patrn);
-  std::unique_ptr<FileMatch> result = engine.MatchAll(path);
+  std::unique_ptr<FileMatch> result = engine.MatchFile(path);
   std::ostringstream oss;
   oss << *result;
   std::string result_str = oss.str();
