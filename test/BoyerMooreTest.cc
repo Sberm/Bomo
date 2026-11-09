@@ -21,11 +21,11 @@ TEST(BM, delta1) {
   BoyerMoore bm(patrn);
   auto delta1 = bm.GetDelta1();
   std::array<int, UCHAR_MAX> expected;
-  expected.fill(bm.GetPatternSize());
-  expected['a'] = 0;
-  expected['b'] = 1;
-  expected['c'] = 2;
-  expected['d'] = 8;
+  expected.fill(-1);
+  expected['a'] = 10;
+  expected['b'] = 9;
+  expected['c'] = 8;
+  expected['d'] = 2;
   ASSERT_EQ(delta1, expected);
 }
 

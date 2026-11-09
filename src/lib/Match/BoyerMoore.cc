@@ -11,20 +11,13 @@
 BoyerMoore::BoyerMoore(std::string const & pattern): pattern_(pattern) {
   /*
    * -=-=-=-=-=-=-=-=-=-=-= Bad character rule (delta1) -=-=-=-=-=-=-=-=-=-=-=
-   * Space complexity is either O(km) where k is the size of alphabet and m is
-   * the size of the pattern, delta1[charset][pattern_sz], which records all
-   * occurrences; or O(k) and only records the last occurrence of a character.
-   * 
-   * We choose to do O(k) for space. And the time complexity is O(q + m) where
-   * q is the size of the alphabet.
+   * Only the last occurrence is necessary
    * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
    */
-  // TODO: make pattern_sz a separate variable or get it from .size()
   size_t pattern_sz = pattern_.size();
-  delta1_.fill(pattern_sz);
-  for (int i = 0; i < pattern_sz; i++) {
-    delta1_[static_cast<unsigned char>(pattern_[i])] = pattern_sz - 1 - i;
-  }
+  delta1_.fill(-1);
+  for (int i = 0; i < pattern_sz; i++)
+    delta1_[static_cast<unsigned char>(pattern_[i])] = i;
 
   /*
    * -=-=-=-=-=-=-=-=-=-=-=-= Good suffix rule (delta2) =-=-=-=-=-=-=-=-=-=-=-
@@ -82,19 +75,22 @@ bool BoyerMoore::FindAndConsume2(std::string_view const text, size_t const start
 
   while (text_idx < end) {
     int64_t pattern_idx = pattern_sz - 1;
+    int64_t save = text_idx;
 
     while (pattern_idx >= 0 && text[text_idx] == pattern_[pattern_idx]) {
       pattern_idx -= 1;
       text_idx -= 1;
     }
-    if (pattern_idx <= 0) {
+    if (pattern_idx < 0) {
       *capture = std::string_view(text.begin() + text_idx + 1,
                                   text.begin() + text_idx + 1 + pattern_sz);
-      text_idx += pattern_sz + 1;
       return true;
     } else {
-      // text[text_idx] can be negative
-      text_idx += std::max(delta1_[static_cast<unsigned char>(text[text_idx])], delta2_[pattern_idx]);
+      text_idx = std::max({
+          save + 1LL,
+          save + pattern_idx - delta1_[static_cast<unsigned char>(text[text_idx])],
+          text_idx + static_cast<int64_t>(delta2_[pattern_idx])
+      });
     }
   }
   return false;
